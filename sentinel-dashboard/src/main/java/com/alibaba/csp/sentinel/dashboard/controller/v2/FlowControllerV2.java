@@ -67,13 +67,16 @@ public class FlowControllerV2 {
 
     @GetMapping("/rules")
     @AuthAction(PrivilegeType.READ_RULE)
-    public Result<List<FlowRuleEntity>> apiQueryMachineRules(@RequestParam String app) {
+    public Result<List<FlowRuleEntity>> apiQueryMachineRules(@RequestParam String app,
+                                                             @RequestParam String ip,
+                                                             @RequestParam Integer port) {
 
         if (StringUtil.isEmpty(app)) {
             return Result.ofFail(-1, "app can't be null or empty");
         }
         try {
-            List<FlowRuleEntity> rules = ruleProvider.getRules(app);
+            // TODO ip and port
+            List<FlowRuleEntity> rules = ruleProvider.getRules(app, ip, port);
             if (rules != null && !rules.isEmpty()) {
                 for (FlowRuleEntity entity : rules) {
                     entity.setApp(app);

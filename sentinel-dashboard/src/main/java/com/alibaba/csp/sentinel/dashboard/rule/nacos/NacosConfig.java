@@ -13,13 +13,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.alibaba.csp.sentinel.dashboard.rule;
+package com.alibaba.csp.sentinel.dashboard.rule.nacos;
+
+import com.alibaba.nacos.api.config.ConfigFactory;
+import com.alibaba.nacos.api.config.ConfigService;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
 /**
  * @author Eric Zhao
  * @since 1.4.0
  */
-public interface DynamicRuleProvider<T> {
+@Configuration
+public class NacosConfig {
+    @Value("${sentinel.nacos.config.serverAddr}")
+    private String serverAddr;
 
-    T getRules(String appName, String ip, Integer port) throws Exception;
+    @Bean
+    public ConfigService nacosConfigService() throws Exception {
+        return ConfigFactory.createConfigService(serverAddr);
+    }
 }
